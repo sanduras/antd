@@ -1,57 +1,62 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Button, Layout, Menu, theme } from "antd";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import {
   MenuFoldOutlined,
+  ProfileOutlined,
+  CalendarOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Layout, Menu, Button, theme } from 'antd';
+  DashboardOutlined,
+} from "@ant-design/icons";
 
 const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
+const items = [
+  getItem(<Link to="/admin/">Dashboard</Link>, "1", <DashboardOutlined  />),
+  getItem(<Link to="/bookings">Bookings</Link>, "2", <CalendarOutlined />),
 
+  getItem("My profile", "sub1", <ProfileOutlined />, [
+    getItem(<Link to="/admin/profile/view">View Profile</Link>, "3"),
+    getItem(<Link to="/admin/profile/edit">Edit Profile</Link>, "4"),
+  ]),
+ 
+];
 const FirstLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   return (
-    <Layout style={{height: '100vh'}} >
+    <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
-        />
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]} items={items}/>
+
+      
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+          }}
+        >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             style={{
-              fontSize: '16px',
+              fontSize: "16px",
               width: 64,
               height: 64,
             }}
@@ -59,17 +64,16 @@ const FirstLayout = () => {
         </Header>
         <Content
           style={{
-            margin: '24px 16px',
+            margin: "24px 16px",
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,
           }}
         >
-            <Outlet/>
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
   );
 };
-
 export default FirstLayout;

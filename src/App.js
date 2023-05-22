@@ -1,5 +1,5 @@
 
-import "antd/dist/reset.css";
+import "./App.css"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import route from "./utils/route";
